@@ -1,15 +1,19 @@
 from django.contrib import admin
 
-from users.models import User
+from habits.models import Habit
 
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+@admin.register(Habit)
+class HabitAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "email",
-        "phone",
-        "city",
-        "avatar",
-        "tg_chat_id",
+        "action",
+        "place",
+        "time",
+        "is_pleasurable",
+        "associated_habit",
+        "period",
+        "reward",
+        "execution_time",
+        "is_public",
     )
