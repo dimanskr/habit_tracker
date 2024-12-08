@@ -2,8 +2,9 @@
 
 import django.utils.timezone
 import phonenumber_field.modelfields
-import users.models
 from django.db import migrations, models
+
+import users.models
 
 
 class Migration(migrations.Migration):
@@ -153,6 +154,8 @@ class Migration(migrations.Migration):
                 "verbose_name": "Пользователь",
                 "verbose_name_plural": "Пользователи",
             },
-            managers=[("objects", users.models.UserManager()),],
+            managers=[
+                ("objects", users.models.UserManager()),
+            ],
         ),
     ]

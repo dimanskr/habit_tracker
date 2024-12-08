@@ -61,7 +61,12 @@ class User(AbstractUser):
         **NULLABLE,
         help_text="Загрузите аватарку",
     )
-    tg_chat_id = models.CharField(max_length=50, verbose_name="телеграм id", **NULLABLE, help_text="Введите id telegram",)
+    tg_chat_id = models.CharField(
+        max_length=50,
+        verbose_name="телеграм id",
+        **NULLABLE,
+        help_text="Введите id telegram",
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
