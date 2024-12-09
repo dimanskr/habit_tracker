@@ -8,7 +8,6 @@ from users.permissions import IsOwner
 
 class HabitsViewSet(viewsets.ModelViewSet):
     serializer_class = HabitSerializers
-    queryset = Habit.objects.all()
     pagination_class = HabitPagination
 
     def perform_create(self, serializer):
