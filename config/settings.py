@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "django_filters",
+    "drf_yasg",
+    "corsheaders",
     # my apps
     "users",
     "habits",
@@ -41,6 +43,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -134,3 +137,23 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "UPDATE_LAST_LOGIN": True,
 }
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}
+    },
+}
+
+CORS_ALLOWED_ORIGINS = [
+    os.getenv(
+        "FRONTEND_URL", "localhost/8000"
+    ),  # Замените на адрес вашего фронтенд-сервера
+]
+CSRF_TRUSTED_ORIGINS = [
+    os.getenv(
+        "FRONTEND_URL", "localhost/8000"
+    ),  # Замените на адрес вашего фронтенд-сервера и добавьте адрес бэкенд-сервера
+
+]
+
+CORS_ALLOW_ALL_ORIGINS = False
