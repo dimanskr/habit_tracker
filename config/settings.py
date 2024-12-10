@@ -140,8 +140,14 @@ SIMPLE_JWT = {
 
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
-        "api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Введите токен в формате: Bearer <ваш_токен>",
+        },
     },
+    "USE_SESSION_AUTH": False,
 }
 
 CORS_ALLOWED_ORIGINS = [
@@ -153,7 +159,6 @@ CSRF_TRUSTED_ORIGINS = [
     os.getenv(
         "FRONTEND_URL", "localhost/8000"
     ),  # Замените на адрес вашего фронтенд-сервера и добавьте адрес бэкенд-сервера
-
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
