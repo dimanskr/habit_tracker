@@ -18,7 +18,6 @@ class UserCreateAPIView(CreateAPIView):
 
 class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
-    queryset = User.objects.all()
 
     def perform_update(self, serializer):
         # Разрешаем редактирование только владельцу профиля
@@ -31,3 +30,12 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
         if "password" in serializer.validated_data:
             user.set_password(serializer.validated_data["password"])
             user.save()
+
+    def get_queryset(self):
+        """
+        Возвращает только профиль текущего пользователя.
+        """
+        if not self.request.user.is_authenticated:
+            raise PermissionDenied("Вы должны быть авторизованы для доступа к профилю.")
+        # Ограничиваем queryset текущим пользователем
+        return User.objects.filter(pk=self.request.user.pk)

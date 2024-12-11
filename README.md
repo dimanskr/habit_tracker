@@ -46,6 +46,13 @@
 Через админку или эндпоинт `/users/update/` задайте пользователю 
 `tg_chat_id` для получения сообщений в Telegram.
 
+Добавлены тесты и их результаты в файле `coverage-report.txt`. Запустить их можно так:
+    
+   ```bash
+    coverage run --source='.' manage.py test
+    coverage report -m > coverage_report.txt
+   ```
+
 
 ## Эндпоинты можно посмотреть в документации swagger или redoc
 
