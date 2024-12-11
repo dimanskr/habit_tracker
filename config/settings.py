@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "django_filters",
     "drf_yasg",
     "corsheaders",
+    "django_celery_beat",
     # my apps
     "users",
     "habits",
@@ -140,8 +141,14 @@ SIMPLE_JWT = {
 
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
-        "api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Введите токен в формате: Bearer <ваш_токен>",
+        },
     },
+    "USE_SESSION_AUTH": False,
 }
 
 CORS_ALLOWED_ORIGINS = [
@@ -153,7 +160,24 @@ CSRF_TRUSTED_ORIGINS = [
     os.getenv(
         "FRONTEND_URL", "localhost/8000"
     ),  # Замените на адрес вашего фронтенд-сервера и добавьте адрес бэкенд-сервера
-
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
+
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
+CELERY_BEAT_SCHEDULE = {
+    'task-name': {
+        'task': 'habits.tasks.send_habits',
+        'schedule': timedelta(minutes=1),
+    },
+}

@@ -6,9 +6,9 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="LMS API",
+        title="Habits tracker",
         default_version="v1",
-        description="Learning Management System",
+        description="Habits tracker API",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),

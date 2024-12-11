@@ -24,8 +24,10 @@ class HabitsViewSet(viewsets.ModelViewSet):
         return super().get_permissions()
 
     def get_queryset(self):
-        queryset = Habit.objects.filter(owner=self.request.user)
-        return queryset
+        user = self.request.user
+        if user.is_authenticated:
+            return Habit.objects.filter(owner=user)
+        return Habit.objects.none()
 
 
 class HabitsListAPIView(generics.ListAPIView):
