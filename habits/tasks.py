@@ -1,23 +1,10 @@
 import datetime
 
 from celery import shared_task
-from telegram import Bot
+from django.utils import timezone
 
-from config.settings import TELEGRAM_TOKEN
 from habits.models import Habit
-
-bot = Bot(token=TELEGRAM_TOKEN)
-
-
-@shared_task
-def send_telegram_message(text, chat_id):
-    """
-    Отправляет сообщение через Telegram.
-    """
-    try:
-        bot.send_message(chat_id=chat_id, text=text)
-    except Exception as e:
-        print(f"Ошибка отправки сообщения в Telegram: {e}")
+from habits.services import send_telegram_message
 
 
 @shared_task
@@ -35,9 +22,11 @@ def send_habits():
         time__minute=current_datetime.minute,  # Совпадение по минуте
     )
     for habit in habits:
-        message = f"Напоминание о привычке '{habit.action}' в '{habit.place}' в {habit.time.strftime('%H:%M')}."
-        # отправляем привычку в телеграм как отложенную задачу Celery
-        send_telegram_message.delay(message, habit.owner.tg_chat_id)
+        local_time = timezone.localtime(habit.time)
+        formatted_time = local_time.strftime("%H:%M")
+        message = f"Напоминание о привычке '{habit.action}' в '{habit.place}' в {formatted_time}."
+        # отправляем привычку в телеграм
+        send_telegram_message(message, habit.owner.tg_chat_id)
         # изменяем дату привычки
         habit.time += datetime.timedelta(days=habit.period)
         habit.save()
